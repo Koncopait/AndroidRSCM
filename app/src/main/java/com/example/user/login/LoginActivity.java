@@ -19,6 +19,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onLogin (View view){
         String username = username_et.getText().toString();
         String password = password_et.getText().toString();
+        String type = "login";
+        KuliBelakang kuliBelakang = new KuliBelakang(this);
+        kuliBelakang.execute(type , username, password );
+
     }
 
 

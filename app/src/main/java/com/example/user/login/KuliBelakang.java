@@ -1,42 +1,65 @@
 package com.example.user.login;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Created by user on 11/07/2017.
  */
 
-public class KuliBelakang extends AsyncTask<String,Void,Void> {
+public class KuliBelakang extends AsyncTask<String,Void,String> {
     Context context;
-
+    AlertDialog alertDialog;
     KuliBelakang(Context etx){
         context = etx;
     }
 
 
     @Override
-    protected Void doInBackground(String... params) {
+    protected String doInBackground(String... params) {
         String type = params [0];
-        String login_url = "http://localhost/mahasiswa/login.php";
+        String login_url = "http://192.168.1.226:8099/cms/api/login.php";
         if(type.equals("login")){
             try {
-
+                String username = params [1];
+                String password = params [2];
                 URL url = new URL (login_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputstream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputstream, "UTV-8"))
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputstream, "UTF-8"));
+                String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8")
+                        +"&"+URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                String result = "";
+                String line="";
+                while((line=bufferedReader.readLine())!= null){
+                    result += line;
+
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
             }catch (MalformedURLException e){
                 e.printStackTrace();
             }catch (IOException e){
@@ -48,12 +71,15 @@ public class KuliBelakang extends AsyncTask<String,Void,Void> {
 
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
+        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle("Login Status");
+
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(String result) {
+        alertDialog.setMessage(result);
+        alertDialog.show();
     }
 
     @Override
