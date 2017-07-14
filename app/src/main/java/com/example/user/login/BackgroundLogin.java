@@ -15,23 +15,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-
+import com.example.user.login.url_link;
 /**
  * Created by user on 11/07/2017.
  */
 
-public class KuliBelakang extends AsyncTask<String,Void,String> {
+public class BackgroundLogin extends AsyncTask<String,Void,String> {
     Context context;
-    AlertDialog alertDialog;
-    KuliBelakang(Context etx){
+     AlertDialog alertDialog;
+    BackgroundLogin(Context etx){
         context = etx;
     }
 
 
     @Override
-    protected String doInBackground(String... params) {
+    public String doInBackground(String... params) {
         String type = params [0];
-        String login_url = "http://192.168.1.226:8099/cms/api/login.php";
+        String login_url;
+        url_link link = new url_link();
+        login_url = link.getUrl_link(type);
         if(type.equals("login")){
             try {
                 String username = params [1];

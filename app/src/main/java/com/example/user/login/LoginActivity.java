@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 public class LoginActivity extends AppCompatActivity {
 
+
     EditText username_et, password_et;
 
     @Override
@@ -20,10 +21,11 @@ public class LoginActivity extends AppCompatActivity {
         String username = username_et.getText().toString();
         String password = password_et.getText().toString();
         String type = "login";
-        KuliBelakang kuliBelakang = new KuliBelakang(this);
-        kuliBelakang.execute(type , username, password );
-
+        BackgroundLogin backgroundLogin = new BackgroundLogin(this);
+        backgroundLogin.execute(type , username, password );
     }
+
+
 
 
 }
