@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 public class LoginWithPin_Activity extends Activity  {
     Button login;
-    TextView register;
     EditText username_et, pin_et;
 
     @Override
@@ -38,20 +37,11 @@ public class LoginWithPin_Activity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_withpin);
         login = (Button) findViewById(R.id.b_login);
-        register = (TextView) findViewById(R.id.register);
 
         username_et = (EditText) findViewById(R.id.et_username);
         pin_et = (EditText) findViewById(R.id.et_pin);
 
 
-        register.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent home = new Intent(LoginWithPin_Activity.this, ForgetPasswordActivity.class);
-                startActivity(home);
-            }
-        });
 
         login.setOnClickListener(new OnClickListener() {
 

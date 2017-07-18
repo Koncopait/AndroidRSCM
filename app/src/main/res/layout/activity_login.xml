@@ -124,7 +124,7 @@
             android:layout_below="@+id/b_login"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="29dp"
-            android:text="Forgot Password?"
+            android:text="Forgot Password?            "
             android:textColor="@android:color/white"
             android:textSize="15sp" />
 
@@ -135,7 +135,7 @@
             android:layout_below="@+id/b_login"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="29dp"
-            android:text="Login With Pin"
+            android:text="Sign In With Pin"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
 
