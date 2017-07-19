@@ -1,17 +1,32 @@
 package com.example.user.login;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import android.app.AlertDialog;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import  com.example.user.login.Helper.url_link;
+
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -22,8 +37,16 @@ import java.io.OutputStreamWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Map;
+
 import android.widget.TextView;
 import android.widget.Toast;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import okhttp3.Route;
 
 
 public class LoginActivity extends Activity  {
@@ -58,6 +81,7 @@ public class LoginActivity extends Activity  {
             public void onClick(View v) {
                 Intent forget = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(forget);
+
             }
         });
 
@@ -143,21 +167,36 @@ public class LoginActivity extends Activity  {
         @Override
         protected void onPostExecute(String result) {
             pDialog.dismiss();
-            if(result.matches(".*Username/Password incorrect..*")){
-                alertDialog.setMessage("Login Failed");
+            JSONObject jsonObj = null;
+            String reason="";
+            int status=100;
+            try
+            {
+                jsonObj = XML.toJSONObject(result);
+
+            }
+            catch (JSONException e)
+            {
+                Log.e("JSON exception", e.getMessage());
+                e.printStackTrace();
+            }
+            if(status == -1){
+                alertDialog.setMessage(reason);
                 alertDialog.show();
             }else{
-                alertDialog.setMessage("Login Success");
+                alertDialog.setMessage(jsonObj.toString());
                 alertDialog.show();
-                Intent Home = new Intent(LoginActivity.this, HomeActivity.class);
+                /*Intent Home = new Intent(LoginActivity.this, HomeActivity.class);
                 alertDialog.dismiss();
                 finish();
-                startActivity(Home);
+                startActivity(Home);*/
 
             }
         }
 
 
     }
+
+
 
 }
