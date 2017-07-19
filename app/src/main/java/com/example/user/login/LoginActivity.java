@@ -42,13 +42,6 @@ import java.util.Map;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import okhttp3.Route;
-
-
 public class LoginActivity extends Activity  {
 
     Button login;
@@ -169,7 +162,8 @@ public class LoginActivity extends Activity  {
             pDialog.dismiss();
             JSONObject jsonObj = null;
             String reason="";
-
+            String token = "";
+            String first ="";
 
             int status=100;
             try
@@ -181,6 +175,12 @@ public class LoginActivity extends Activity  {
                 status = MedMasterUser.getInt("status");
                 reason = MedMasterUser.getString("reason");
 
+                if (status == 0){
+                    token = MedMasterUser.getString("token");
+                    first = MedMasterUser.getString("firstname");
+                }else{
+                    token = null;
+                }
             }
             catch (JSONException e)
             {
@@ -192,12 +192,15 @@ public class LoginActivity extends Activity  {
                 alertDialog.show();
             }else if (status == 0){
                 Intent Home = new Intent(LoginActivity.this, HomeActivity.class);
-
                 alertDialog.setMessage(jsonObj.toString());
                 alertDialog.show();
-              //  alertDialog.dismiss();
-               // finish();
-               // startActivity(Home);
+                alertDialog.dismiss();
+                Bundle b = new Bundle();
+                b.putString("token", token);
+                b.putString("username", first);
+                Home.putExtras(b);
+                finish();
+                startActivity(Home);
 
             }
         }
