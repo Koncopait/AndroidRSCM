@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,11 @@ import 	android.view.Gravity;
 import com.example.user.login.Helper.url_link;
 import android.widget.Toast;
 import android.text.TextUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -117,12 +123,31 @@ public class ForgetPasswordActivity extends Activity {
         @Override
         protected void onPostExecute(String result) {
             pDialog.dismiss();
+            JSONObject jsonObj = null;
+            String reason="";
 
-            if(result.matches(".*<status>-1</status>..*")){
-                alertDialog.setMessage("Email Address not found in our records. Please contact support.");
+
+            int status=100;
+            try
+
+            {
+                jsonObj = XML.toJSONObject(result);
+                JSONObject jObj = new JSONObject(jsonObj.toString());
+                JSONObject forgetpassword = jObj.getJSONObject("forgetpassword");
+                status = forgetpassword.getInt("status");
+                reason = forgetpassword.getString("reason");
+
+            }
+            catch (JSONException e)
+            {
+                Log.e("JSON exception", e.getMessage());
+                e.printStackTrace();
+            }
+            if(status == 0){
+                alertDialog.setMessage(reason);
                 alertDialog.show();
-            }else if (result.matches(".*<status>0</status>..*")){
-                alertDialog.setMessage("Email containing your username and password has been sent to your email address!");
+            }else if (status==-1){
+                alertDialog.setMessage(reason);
                 alertDialog.show();
             }
         }

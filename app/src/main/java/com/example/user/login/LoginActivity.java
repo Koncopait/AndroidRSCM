@@ -169,10 +169,17 @@ public class LoginActivity extends Activity  {
             pDialog.dismiss();
             JSONObject jsonObj = null;
             String reason="";
+
+
             int status=100;
             try
+
             {
                 jsonObj = XML.toJSONObject(result);
+                JSONObject jObj = new JSONObject(jsonObj.toString());
+                JSONObject MedMasterUser = jObj.getJSONObject("MedMasterUser");
+                status = MedMasterUser.getInt("status");
+                reason = MedMasterUser.getString("reason");
 
             }
             catch (JSONException e)
@@ -183,13 +190,14 @@ public class LoginActivity extends Activity  {
             if(status == -1){
                 alertDialog.setMessage(reason);
                 alertDialog.show();
-            }else{
+            }else if (status == 0){
+                Intent Home = new Intent(LoginActivity.this, HomeActivity.class);
+
                 alertDialog.setMessage(jsonObj.toString());
                 alertDialog.show();
-                /*Intent Home = new Intent(LoginActivity.this, HomeActivity.class);
-                alertDialog.dismiss();
-                finish();
-                startActivity(Home);*/
+              //  alertDialog.dismiss();
+               // finish();
+               // startActivity(Home);
 
             }
         }

@@ -47,23 +47,8 @@
 
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:id="@+id/linearLayout7">
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:layout_below="@+id/linearLayout7"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout2">
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/b_login"
